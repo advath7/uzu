@@ -15,6 +15,8 @@ workspace = true
 [features]
 default = ["metal", "cpu", "grammar"]
 
+vulkan = ["cpu", "dep:ash", "dep:vk-mem", "dep:dirs", "dep:shader-slang", "dep:shader-slang-sys", "dep:blake3", "dep:serde_json"]
+
 metal = [
     "dep:rayon",
     "dep:clang-ast",
@@ -147,3 +149,11 @@ tokio = { workspace = true, features = ["full"] }
 uzu.workspace = true
 criterion = { workspace = true, default-features = true }
 proptest = { workspace = true, default-features = true }
+
+[[example]]
+name = "vulkan"
+required-features = ["vulkan"]
+
+[[example]]
+name = "vulkan_generate"
+required-features = ["vulkan"]
