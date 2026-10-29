@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 pub enum Backend {
     Metal,
     WebGPU,
+    Vulkan,
     Cpu,
 }
 
@@ -13,6 +14,7 @@ impl Backend {
         match self {
             Backend::Metal => "metal".to_string(),
             Backend::WebGPU => "webgpu".to_string(),
+            Backend::Vulkan => "vulkan".to_string(),
             Backend::Cpu => "cpu".to_string(),
         }
     }
@@ -21,7 +23,8 @@ impl Backend {
         match self {
             Backend::Metal => "backend-metal".to_string(),
             Backend::WebGPU => "backend-webgpu".to_string(),
-            Backend::Cpu => "backend-cpu".to_string(),
+            // The uzu crate enables Vulkan by target, not by feature, and the engine's Vulkan includes the CPU backend.
+            Backend::Vulkan | Backend::Cpu => "backend-cpu".to_string(),
         }
     }
 }

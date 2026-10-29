@@ -72,6 +72,13 @@ aliases = ["windows"]
 capabilities_supported = ["grammar"]
 capabilities_default = ["grammar"]
 
+[targets."aarch64-linux-android"]
+backend = "vulkan"
+aliases = ["android"]
+capabilities_supported = ["grammar"]
+capabilities_default = ["grammar"]
+required_envs = ["CARGO_NDK_PLATFORM"]
+
 [targets."wasm32-unknown-unknown"]
 backend = "webgpu"
 aliases = ["wasm"]
