@@ -14,6 +14,9 @@ mod slang;
 #[cfg(feature = "webgpu")]
 mod webgpu;
 
+#[cfg(feature = "vulkan")]
+mod vulkan;
+
 mod cpu;
 
 fn main() -> anyhow::Result<ExitCode> {
@@ -26,7 +29,7 @@ fn main() -> anyhow::Result<ExitCode> {
     let target_arch = env::var("CARGO_CFG_TARGET_ARCH")?;
     let target_os = env::var("CARGO_CFG_TARGET_OS")?;
 
-    println!("cargo::rustc-check-cfg=cfg(backend, values(\"metal\", \"webgpu\", \"cpu\"))");
+    println!("cargo::rustc-check-cfg=cfg(backend, values(\"metal\", \"webgpu\", \"vulkan\", \"cpu\"))");
 
     let backend_metal = cfg!(feature = "metal") && matches!(target_os.as_ref(), "macos" | "ios" | "tvos" | "visionos");
     if backend_metal {
@@ -36,6 +39,11 @@ fn main() -> anyhow::Result<ExitCode> {
     let backend_webgpu = cfg!(feature = "webgpu");
     if backend_webgpu {
         println!("cargo::rustc-cfg=backend=\"webgpu\"");
+    }
+
+    let backend_vulkan = cfg!(feature = "vulkan");
+    if backend_vulkan {
+        println!("cargo::rustc-cfg=backend=\"vulkan\"");
     }
 
     let backend_cpu = cfg!(feature = "cpu");
@@ -75,6 +83,11 @@ fn main() -> anyhow::Result<ExitCode> {
     #[cfg(feature = "webgpu")]
     if backend_webgpu {
         compilers.push(Box::new(slang::SlangCompiler::<webgpu::WebGPU>::new()?));
+    }
+
+    #[cfg(feature = "vulkan")]
+    if backend_vulkan {
+        compilers.push(Box::new(vulkan::SlangCompiler::new()?));
     }
 
     if backend_cpu {
