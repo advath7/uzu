@@ -156,7 +156,3 @@ proptest = { workspace = true, default-features = true }
 [[example]]
 name = "vulkan"
 required-features = ["vulkan"]
-
-[[example]]
-name = "vulkan_generate"
-required-features = ["vulkan"]
