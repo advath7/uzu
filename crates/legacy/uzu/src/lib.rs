@@ -41,6 +41,8 @@ inventory::submit! {
     }
 }
 
+#[cfg(target_os = "android")]
+mod android;
 #[cfg(not(target_os = "wasi"))]
 pub mod device;
 #[cfg(not(target_os = "wasi"))]
